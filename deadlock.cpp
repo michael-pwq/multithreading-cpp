@@ -5,22 +5,22 @@
 
 struct CriticalData {
     std::string name;
-    std::mutex dataMutex;
+    std::mutex data_mtx;
 
     CriticalData(std::string name) : name(name) {}
 };
 
 void deadlock(CriticalData& data1, CriticalData& data2) {
-    data1.dataMutex.lock();
+    data1.data_mtx.lock();
     std::cout << "Thread: " << std::this_thread::get_id() << " get mutex of " << data1.name << std::endl;
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
-    data2.dataMutex.lock();
+    data2.data_mtx.lock();
     std::cout << "Thread: " << std::this_thread::get_id() << " get mutex of " << data2.name << std::endl;
 
-    data2.dataMutex.unlock();
-    data1.dataMutex.unlock();
+    data2.data_mtx.unlock();
+    data1.data_mtx.unlock();
 }
 
 int main() {

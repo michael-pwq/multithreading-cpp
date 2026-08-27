@@ -2,6 +2,7 @@
 
 #include <array>
 #include <atomic>
+#include <cstddef>
 #include <new>
 
 #define ALIGN_CACHE_LINE alignas(std::hardware_destructive_interference_size)

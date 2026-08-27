@@ -10,25 +10,25 @@ struct Divide {
 
 int main() {
     // define the promises
-    std::promise<int> prodPromise;
-    std::promise<int> divPromise;
+    std::promise<int> prod_promise;
+    std::promise<int> div_promise;
 
     // get the futures
-    std::future<int> prodFuture = prodPromise.get_future();
-    std::future<int> divFuture = divPromise.get_future();
+    std::future<int> prod_fut = prod_promise.get_future();
+    std::future<int> div_fut = div_promise.get_future();
 
     int a = 20, b = 10;
     // calculate concurrently
-    std::thread prodThread(product, std::move(prodPromise), a, b);
+    std::thread prod_thread(product, std::move(prod_promise), a, b);
     Divide divide;
-    std::thread divThread(divide, std::move(divPromise), a, b);
+    std::thread div_thread(divide, std::move(div_promise), a, b);
 
     // get the results
-    std::cout << a << "*" << b << "=" << prodFuture.get() << std::endl;
-    std::cout << a << "/" << b << "=" << divFuture.get() << std::endl;
+    std::cout << a << "*" << b << "=" << prod_fut.get() << std::endl;
+    std::cout << a << "/" << b << "=" << div_fut.get() << std::endl;
 
-    prodThread.join();
-    divThread.join();
+    prod_thread.join();
+    div_thread.join();
 
     return 0;
 }

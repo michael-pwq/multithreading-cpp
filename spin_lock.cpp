@@ -18,15 +18,15 @@ class SpinLock {
 };
 
 int main() {
-    SpinLock spinLock;
+    SpinLock spin_lock;
     const int N = 4;
     int count = 0;
     std::vector<std::thread> threads;
     auto increment = [&]() {
         for (int i = 0; i < 1000; ++i) {
-            spinLock.lock();
+            spin_lock.lock();
             ++count;
-            spinLock.unlock();
+            spin_lock.unlock();
         }
     };
     for (int i = 0; i < N; ++i) { threads.emplace_back(increment); }

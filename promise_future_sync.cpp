@@ -3,21 +3,21 @@
 #include <iostream>
 #include <thread>
 
-int sharedData = 0;
+int shared_data = 0;
 
-void doTask() { std::cout << "Data: " << sharedData << std::endl; }
+void do_task() { std::cout << "Data: " << shared_data << std::endl; }
 
 void produce(std::promise<void>&& promise) {
     std::cout << "Producing..." << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    sharedData = 1;
+    shared_data = 1;
     promise.set_value();
 }
 
 void consume(std::future<void>&& future) {
     std::cout << "Waiting..." << std::endl;
     future.wait();
-    doTask();
+    do_task();
     std::cout << "All done." << std::endl;
 }
 

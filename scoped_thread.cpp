@@ -17,6 +17,6 @@ class ScopedThread {
 };
 
 int main() {
-    ScopedThread t(std::thread([] { std::cout << std::this_thread::get_id() << std::endl; }));
+    ScopedThread st(std::thread([] { std::cout << std::this_thread::get_id() << std::endl; }));
     return 0;
 }

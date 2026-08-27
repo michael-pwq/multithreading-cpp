@@ -4,7 +4,7 @@
 #include <thread>
 #include <vector>
 
-std::mutex coutMutex;
+std::mutex cout_mtx;
 
 struct Divide {
     void operator()(std::promise<int>&& promise, int a, int b) const {
@@ -16,32 +16,32 @@ struct Divide {
 };
 
 struct Requestor {
-    void operator()(std::shared_future<int> shdFuture) {
-        std::lock_guard<std::mutex> l(coutMutex);
+    void operator()(std::shared_future<int> shared_fut) {
+        std::lock_guard<std::mutex> l(cout_mtx);
         std::cout << "thread id(" << std::this_thread::get_id() << "): ";
         try {
-            std::cout << shdFuture.get() << std::endl;
+            std::cout << shared_fut.get() << std::endl;
         } catch (const std::exception& e) { std::cout << e.what() << std::endl; }
     }
 };
 
 int main() {
     // define the promise
-    std::promise<int> divPromise;
+    std::promise<int> div_promise;
 
     // get the shared future
-    std::shared_future<int> shdFuture = divPromise.get_future();
+    std::shared_future<int> shared_fut = div_promise.get_future();
 
     int a = 20, b = 10;
     // calculate in a separate thread
     Divide divide;
-    std::thread divThread(divide, std::move(divPromise), a, b);
+    std::thread div_thread(divide, std::move(div_promise), a, b);
 
     Requestor requestor;
     std::vector<std::thread> threads;
-    for (int i = 0; i < 4; ++i) threads.emplace_back(requestor, shdFuture);
+    for (int i = 0; i < 4; ++i) threads.emplace_back(requestor, shared_fut);
 
-    divThread.join();
+    div_thread.join();
     for (auto& t : threads) t.join();
 
     return 0;

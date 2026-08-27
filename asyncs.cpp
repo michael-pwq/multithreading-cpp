@@ -2,26 +2,25 @@
 #include <iostream>
 #include <string>
 
-std::string helloFunction(const std::string& s) { return "Hello C++11 from " + s + "."; }
+std::string hello_func(const std::string& s) { return "Hello C++11 from " + s + "."; }
 
-class HelloFunctionObject {
+class HelloFuncObject {
   public:
     std::string operator()(const std::string& s) const { return "Hello C++11 from " + s + "."; }
 };
 
 int main() {
     // future with function
-    auto futureFunction = std::async(helloFunction, "function");
+    auto fut_func = std::async(hello_func, "function");
 
     // future with function object
-    HelloFunctionObject helloFunctionObject;
-    auto futureFunctionObject = std::async(helloFunctionObject, "function object");
+    HelloFuncObject hello_fun_obj;
+    auto fut_func_obj = std::async(hello_fun_obj, "function object");
 
     // future with lambda function
-    auto futureLambda =
-        std::async([](const std::string& s) { return "Hello C++11 from " + s + "."; }, "lambda function");
+    auto fut_lambda = std::async([](const std::string& s) { return "Hello C++11 from " + s + "."; }, "lambda function");
 
-    std::cout << futureFunction.get() << "\n" << futureFunctionObject.get() << "\n" << futureLambda.get() << std::endl;
+    std::cout << fut_func.get() << "\n" << fut_func_obj.get() << "\n" << fut_lambda.get() << std::endl;
 
     return 0;
 }

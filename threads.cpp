@@ -1,6 +1,5 @@
 #include <iostream>
 #include <thread>
-#include <vector>
 
 void func(int x) {
     std::cout << "Hey, I'm thread " << std::this_thread::get_id() << std::endl;
@@ -16,15 +15,15 @@ class FuncObject {
 };
 
 int main() {
-    auto lambdaFunc = [](int x) {
+    auto lambda_func = [](int x) {
         std::cout << "Hey, I'm thread " << std::this_thread::get_id() << std::endl;
         std::cout << "Argument passed in: " << x << std::endl;
     };
 
     std::thread t1(func, 1);
-    std::thread t2(lambdaFunc, 2);
-    FuncObject funcObject;
-    std::thread t3(funcObject, 3);
+    std::thread t2(lambda_func, 2);
+    FuncObject func_obj;
+    std::thread t3(func_obj, 3);
     std::thread t4(
         [](int x) {
             std::cout << "Hey, I'm thread " << std::this_thread::get_id() << std::endl;
